@@ -1,0 +1,48 @@
+function openMobileNavbar() {
+	var openNavbar = document.getElementById("topNavBar");
+	if (openNavbar.className === "topNav") {
+		openNavbar.className += " responsive";
+	} else {
+		openNavbar.className = "topNav";
+	}
+}
+$(document).ready(function() {
+	var resizeTime = 0;
+	var resizeDelay = 10;
+	var mapImage = $("img");
+	mapImage.mapster({
+		mapKey: "alt",
+		scaleMap: true,
+		onConfigured: resize
+	});
+
+	function resize() {
+		var brainMap = $("#brainMap");
+		var newbrainMapWidth = brainMap.width();
+		mapImage.mapster("resize", newbrainMapWidth, 0, resizeTime);
+	}
+
+	function onWindowResize() {
+		var userWin = $(window);
+		var userWinWidth = userWin.width();
+		var userWinHeight = userWin.height();
+		window.setTimeout(function() {
+			var newWidth = userWin.width();
+			var newHeight = userWin.height();
+			if (newWidth === userWinWidth && newHeight === userWinHeight) {
+				resize(newWidth, newHeight);
+			}
+		});
+	}
+	$(window).bind("resize", onWindowResize);
+});
+
+$(function() {
+	var newUrl = "";
+	$("#chooseBrainsMenu").change(function() {
+		$newUrl = $("#chooseBrainsMenu option:selected").val();
+	});
+	$("#executeLink").click(function() {
+		location = $newUrl;
+	});
+});
